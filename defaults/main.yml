@@ -1,0 +1,4 @@
+---
+gickup_image: "buddyspencer/gickup:latest"
+gickup_timezone: "Europe/Madrid"
+gickup_host_path: /etc/gickup

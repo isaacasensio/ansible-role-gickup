@@ -1,0 +1,12 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Populate service facts
+      ansible.builtin.service_facts:
+
+    - name: Verify gickup is running
+      ansible.builtin.assert:
+        that: >-
+          ansible_facts['services']['gickup.service']['state'] == 'running'
+      become: true

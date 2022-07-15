@@ -1,0 +1,16 @@
+[Unit]
+Description=gickup
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+User={{ gickup_container_user }}
+Group=docker
+WorkingDirectory=/etc/gickup
+ExecStartPre=/usr/local/bin/docker-compose -f /etc/gickup/docker-compose.yml down
+ExecStart=/usr/local/bin/docker-compose -f /etc/gickup/docker-compose.yml up
+ExecStop=/usr/local/bin/docker-compose -f /etc/gickup/docker-compose.yml down
+
+[Install]
+WantedBy=multi-user.target

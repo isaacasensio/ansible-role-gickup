@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+---
+version: "3"
+services:
+  runner:
+    image: buddyspencer/gickup:latest
+    container_name: gickup
+    volumes:
+      - {{gickup_host_backup_path}}:/gickup/backup
+      - {{gickup_host_path}}/config.yml:/gickup/conf.yml
+    command: ["/gickup/conf.yml"]
+    environment:
+      - TZ={{gickup_timezone}}

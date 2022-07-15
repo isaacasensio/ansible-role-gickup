@@ -1,0 +1,33 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  vars:
+    gickup_container_user: root
+    gickup_host_path: /etc/gickup
+    gickup_host_backup_path: /tmp/backup
+    pip_install_packages:
+      - requests
+      - docker
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=true cache_valid_time=600
+      changed_when: false
+    - name: create gickup folders
+      ansible.builtin.file:
+        dest: "{{ item }}"
+        state: directory
+        mode: 0777
+      loop:
+        - "{{gickup_host_backup_path}}"
+        - "{{gickup_host_path}}"
+    - name: create config file
+      ansible.builtin.copy:
+        content: |
+          source:
+          cron: 5 4 * * 5 # At 04:05 on Friday.
+        dest: "{{gickup_host_path}}/config.yml"
+
+  roles:
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
