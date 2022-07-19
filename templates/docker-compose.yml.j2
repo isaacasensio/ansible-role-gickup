@@ -4,6 +4,7 @@ version: "3"
 services:
   runner:
     image: buddyspencer/gickup:latest
+    pull_policy: always
     container_name: gickup
     volumes:
       - {{gickup_host_backup_path}}:/gickup/backup

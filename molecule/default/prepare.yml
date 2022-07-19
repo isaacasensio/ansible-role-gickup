@@ -3,6 +3,7 @@
   hosts: all
   become: true
   vars:
+    docker_compose_version: "v2.4.1"
     gickup_host_path: /etc/gickup
     gickup_host_backup_path: /tmp/backup
     pip_install_packages:
