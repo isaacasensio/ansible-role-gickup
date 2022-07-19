@@ -3,7 +3,6 @@
   hosts: all
   become: true
   vars:
-    gickup_container_user: root
     gickup_host_path: /etc/gickup
     gickup_host_backup_path: /tmp/backup
     pip_install_packages:
