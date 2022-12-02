@@ -1,20 +1,45 @@
 ---
+- name: Create gickup user
+  ansible.builtin.user:
+    name: "{{ gickup_container_user }}"
+    shell: /sbin/nologin
+    create_home: true
+    state: present
+  become: true
+
+- name: Get created user metadata
+  ansible.builtin.getent:
+    database: passwd
+    key: "{{ gickup_container_user }}"
+
+- name: Setting user id and group id facts
+  ansible.builtin.set_fact:
+    created_uid: "{{ ansible_facts.getent_passwd[gickup_container_user].1 }}"
+    created_gid: "{{ ansible_facts.getent_passwd[gickup_container_user].2 }}"
+
 - name: Ensure gickup config folder exists
   become: true
   ansible.builtin.file:
     dest: "{{ item }}"
     state: directory
-    mode: 0777
+    owner: "{{ gickup_container_user }}"
+    group: "{{ gickup_container_user }}"
+    mode: 0755
   loop:
     - "{{ gickup_host_path }}"
     - "{{ gickup_host_path }}/log"
 
 - name: Copy gickup docker-compose template.
   ansible.builtin.template:
-    src: templates/docker-compose.yml.j2
-    dest: "{{ gickup_host_path }}/docker-compose.yml"
+    src: "{{ item }}.j2"
+    dest: "{{ gickup_host_path }}/{{ item }}"
+    owner: "{{ gickup_container_user }}"
+    group: "{{ gickup_container_user }}"
     mode: 0644
   become: true
+  loop:
+    - "docker-compose.yml"
+    - "config.yml"
 
 - name: Create systemd gickup service.
   ansible.builtin.template:
@@ -32,7 +57,7 @@
 
 - name: Remove old image versions
   become: true
-  docker_prune:
+  community.docker.docker_prune:
     images: true
     images_filters:
       dangling: false

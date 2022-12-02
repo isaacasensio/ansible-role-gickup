@@ -3,9 +3,10 @@
 version: "3"
 services:
   runner:
-    image: buddyspencer/gickup:latest
+    image: {{gickup_image}}
     pull_policy: always
     container_name: gickup
+    user: "{{ created_uid }}:{{ created_gid }}"
     volumes:
       - {{gickup_host_backup_path}}:/gickup/backup
       - {{gickup_host_path}}/config.yml:/gickup/conf.yml

@@ -1,7 +1,7 @@
 Gickup
 =========
 
-Installs [gickup](https://github.com/cooperspencer/gickup) as a docker container.
+Installs [gickup](https://github.com/cooperspencer/gickup) docker container as a daemon.
 
 
 Role Variables
@@ -20,14 +20,28 @@ gickup_host_path: /etc/gickup
 Host path which stores Gickup configuration.
 
 ```
-gickup_container_user: pi
+gickup_host_backup_path: /var/backup
 ```
-user running the container 
+Host path where all backups will be stored.
+
+```
+gickup_container_user: gickup
+```
+user running the container
 
 ```
 gickup_timezone: "Europe/Madrid"
 ```
 timezone for cron job
+
+```
+gickup_config_content: |
+source:
+  github:
+    - token: some-token
+      user: some-user  
+```
+Gickup configuration. More info here: https://github.com/cooperspencer/gickup/blob/main/conf.example.yml
 
 Dependencies
 ------------
