@@ -9,6 +9,7 @@ services:
     user: "{{ created_uid }}:{{ created_gid }}"
     volumes:
       - {{gickup_host_backup_path}}:/gickup/backup
+      - {{gickup_host_log_path}}:/gickup/log
       - {{gickup_host_path}}/config.yml:/gickup/conf.yml
     command: ["/gickup/conf.yml"]
     environment:

@@ -27,7 +27,7 @@
     mode: 0755
   loop:
     - "{{ gickup_host_path }}"
-    - "{{ gickup_host_path }}/log"
+    - "{{ gickup_host_log_path }}"
     - "{{ gickup_host_backup_path }}"
 
 - name: Copy gickup docker-compose template.
