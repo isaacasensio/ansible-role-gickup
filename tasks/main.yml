@@ -17,7 +17,7 @@
     created_uid: "{{ ansible_facts.getent_passwd[gickup_container_user].1 }}"
     created_gid: "{{ ansible_facts.getent_passwd[gickup_container_user].2 }}"
 
-- name: Ensure gickup config folder exists
+- name: Ensure gickup required folders exist
   become: true
   ansible.builtin.file:
     dest: "{{ item }}"
@@ -30,13 +30,13 @@
     - "{{ gickup_host_log_path }}"
     - "{{ gickup_host_backup_path }}"
 
-- name: Copy gickup docker-compose template.
+- name: Create gickup files.
   ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: "{{ gickup_host_path }}/{{ item }}"
     owner: "{{ gickup_container_user }}"
     group: "{{ gickup_container_user }}"
-    mode: 0644
+    mode: 0640
   become: true
   loop:
     - "docker-compose.yml"
